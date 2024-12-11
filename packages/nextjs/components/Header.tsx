@@ -4,26 +4,41 @@ import React, { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
+import { useAccount } from "wagmi";
 import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
 import { useOutsideClick } from "~~/hooks/scaffold-eth";
 
 type HeaderMenuLink = {
   label: string;
   href: string;
-  icon?: React.ReactNode;
+  icon?: string;
 };
 
 export const menuLinks: HeaderMenuLink[] = [
   {
     label: "Home",
     href: "/",
+    icon: "🏠",
   },
-
+  {
+    label: "Clanker Demo",
+    href: "/clanker-demo",
+    icon: "🤖",
+  },
+  {
+    label: "Contract Explorer",
+    href: "/contract-explorer",
+    icon: "🔍",
+  },
   {
     label: "Debug Contracts",
     href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
+    icon: "🛠️",
+  },
+  {
+    label: "Claim Fees",
+    href: "/claim-fees",
+    icon: "💰",
   },
 ];
 
@@ -40,10 +55,10 @@ export const HeaderMenuLinks = () => {
               href={href}
               passHref
               className={`${
-                isActive ? "bg-secondary shadow-md" : ""
-              } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
+                isActive ? "bg-secondary shadow-neon" : ""
+              } hover:bg-secondary hover:shadow-neon py-2.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
             >
-              {icon}
+              {icon && <span>{icon}</span>}
               <span>{label}</span>
             </Link>
           </li>
@@ -64,6 +79,8 @@ export const Header = () => {
     useCallback(() => setIsDrawerOpen(false), []),
   );
 
+  const { isConnected } = useAccount();
+
   return (
     <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
       <div className="navbar-start w-auto lg:w-1/2">
@@ -75,7 +92,15 @@ export const Header = () => {
               setIsDrawerOpen(prevIsOpenState => !prevIsOpenState);
             }}
           >
-            <Bars3Icon className="h-1/2" />
+            <svg
+              className="h-6 w-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
           </label>
           {isDrawerOpen && (
             <ul
@@ -90,12 +115,18 @@ export const Header = () => {
           )}
         </div>
         <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
+          <div className="relative w-10 h-10">
+            <Image
+              src="/robot.jpg"
+              alt="Clanker Kit Logo"
+              className="rounded-xl object-cover"
+              fill
+              priority
+            />
           </div>
           <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH</span>
-            <span className="text-xs">Ethereum dev stack</span>
+            <span className="font-bold leading-tight animate-glow">ClankerKit</span>
+            <span className="text-xs">Build & Deploy Clankers</span>
           </div>
         </Link>
         <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
