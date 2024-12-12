@@ -2,6 +2,8 @@
 
 A toolkit for exploring and interacting with Clanker primitives, built on Scaffold-ETH 2.
 
+🌐 **[Live Demo](https://clankerkit.vercel.app)**
+
 ## 🔨 Features
 
 - 🏭 **Token Factory**: Deploy and experiment with Clanker tokens
